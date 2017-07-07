@@ -1,0 +1,32 @@
+选择符
+document.querySelector() document.querySelector()	IE8+,Firefox 3.5+, Safari 3.1+,Chrome,opera
+document.querySelectorAll()	 document.matchesSelector()	childElementCount	IE9+
+firstElementChild	lastElementChild	previousElementSibling	nextElementSibling	getElementsByClassName()	IE9+, Firefox3+, Safari, 3.1+, Chrome, Opera 9.5+classList	remove()	chrome, Firefox
+add()	toggle()	contains()	focus	IE4+, chrome, Firefox, opera 8+
+document.head	chrome, safari5
+document.charSet	IE, firefox, safari, opera, chrome
+document.defaultCharset(浏览器默认字符集)	IE, Safari, Chrome
+<div data-myname=”Yyn” id=”test”></div> js:test.dataset.myname	Fifrefox 6+, chrome
+innerHTML	不支持innerHTML的元素有col、colgroup、frameset、head、HTML、style、table、他body、thead、tfoot、tr
+innerHTML引入js标签和代码出IE8（defer+有效作用域）外，不会出现作用，	
+
+scrollIntoView()	IE, Firefox, Safari, Opera
+contains	IE, FireFox9+, Chrome, Opera, Safari
+compareDocumentPosition	IE9+, Firefox, Safari, Opera, Chrome
+innerText	IE4+,Safari3+,Opera 8+, chrome
+textContent	FireFox, IE9+, opera 10+,chrome
+var sheet=document.styleSheets[0];	rules=sheet.cssRules||sheet.rules;	rule=rules[0]	
+//rule.selectorText	
+//rule.style.cssText	
+//sheet.insertRule(“*{…..}”)	
+//sheet.addRule(“*”,”{….}”);	
+getBoundingClientRect	left,top,right,bottom(元素相对于视口的位置，文档左上角也就是top left的值为0 0 ，IE8之前的浏览器为2 2)
+
+HTMLDocument document.readyState有loading和complete两个属性
+if(document.readyState==”complete”){…}
+兼容模式 document.compatMode document.compatMode==”CSS1Compate”,document.compateMode==”BackCompat”
+文档模式 文档模式决定了可以使用哪个级别的css，可以在JavaScript中使用那些api，以及如何对待文档类型。到了IE9，总共有以下四种文档模型：
+IE5：混杂模型 IE7 IE8 IE9 标准模式
+要强制浏览器使用某种模式渲染页面，以使用http头部信息X-UA-Compatible或通过等价的meta来设置。
+<meta http-equiv=”X-UA-Compatible” content=”IE=IEVersion”>
+IEVersion可以选择：EmulateIE9,EmulateIE8,EmulateIE7,9,8,7,6,5
