@@ -1,0 +1,58 @@
+DOCTYPE
+DOCTYPE(Document Type)，该声明位于文档中最前面的位置，处于 html
+标签之前，此标签告知浏览器文档使用哪种 HTML 或者 XHTML 规范。
+使用 HTML5 doctype，不区分大小写。
+Meta 标签
+meta标签是HTML中head头部的一个辅助性标签，它位于HTML文档头部的 <head> 和 <title>标记之间，它提供用户不可见的信息。虽然这部分信息用户不可见，但是其作用非常强大，特别是当今的前端开发工作中，设置合适的meta标签可以大大提升网站页面的可用性。
+桌面端开发中，meta标签通常用来为搜索引擎优化（SEO）及 robots定义页面主题，或者是定义用户浏览器上的cookie；它可以用于鉴别作者，设定页面格式，标注内容提要和关键字；还可以设置页面使其可以根据你定义的时间间隔刷新自己，以及设置RASC内容等级，等等。
+移动端开发中，meta标签除了桌面端中的功能设置外，还包括，比如viewport设置，添加到主屏幕图标，标签页颜色等等实用设置。具体可以看后面详细的介绍。
+meta标签分类
+meta标签根据属性的不同，可分为两大部分：http-equiv 和 name 属性。
+http-equiv：相当于http的文件头作用，它可以向浏览器传回一些有用的信息，以帮助浏览器正确地显示网页内容。(X-UA-Compatible是针对ie8新加的一个设置，也就是说只有浏览器是ie8或者以上时，才认识这个标识。
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+chrome=1则可以激活Chrome Frame[1]。这时，edge的意思就是用当前最新的标准来渲染，由于当前最新的是ie8，所以用的ie8来渲染。
+1. 如果我们使用content=”IE=8″或者content=”IE=9″等这样不带Emulate的标识，那么浏览器将会忽略你所设置的<doctype>，直接按照你x-ua-compatible定义的标准模式来渲染。
+2. 如果我们使用content=”IE=EmulateIE8″或者content=”IE=EmulateIE9″这样的标识，那么浏览器会先查找你定义的<doctype>，如果你定义的<doctype>正确，将会按照x-ua-compatible定义的标准模式来渲染，如果你的<doctype>错误或者没有，将会以Quirks模式来渲染。
+name属性：主要用于描述网页，与之对应的属性值为content，content中的内 容主要是便于浏览器，搜索引擎等机器人识别，等等。
+<!-- 设置文档的字符编码 -->
+<meta charset="utf-8">
+<!--ie8-->
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- 以上 3 个 meta 标签 *必须* 放在 head 的最前面；其他任何的 head 内容必须在这些标签的 *后面* -->
+<!-- 允许控制资源的过度加载 -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+<!-- 尽早地放置在文档中 -->
+<!-- 仅应用于该标签下的内容 -->
+<!-- Web 应用的名称（仅当网站被用作为一个应用时才使用）-->
+<meta name="application-name" content="应用名称">
+<!-- 针对页面的简短描述（限制 150 字符）-->
+<!-- 在*某些*情况下，该描述是被用作搜索结果展示片段的一部分 -->
+<meta name="description" content="一个页面描述">
+<!-- 控制搜索引擎的抓取和索引行为 -->
+<meta name="robots" content="index,follow,noodp"><!-- 所有的搜索引擎 -->
+<meta name="googlebot" content="index,follow"><!-- 仅对 Google 有效 -->
+<!-- 告诉 Google 不显示网站链接的搜索框 -->
+<meta name="google" content="nositelinkssearchbox"> 
+<!-- 告诉 Google 不提供此页面的翻译 -->
+<meta name="google" content="notranslate">   
+<!-- 验证 Google 搜索控制台的所有权 -->
+<meta name="google-site-verification" content="verification_token">
+JS变量作用域
+JavaScript中只有局部作用域和全局作用域，而且只有函数可以创建局部作用域（let ）。
+JavaScript作用域链
+当JS里声明一个函数的时候，会给该函数创建一个scope属性，该属性指向当前作用域链对象。
+当JS里面调用一个函数的时候，会创建一个执行上下文，这个执行上下文定义了函数解释执行时的环境信息。每个执行上下文都有自己的作用域链，主要用于变量标识符的解析。在 Js 引擎运行一个函数的时候，它首先会把该函数的 scope 属性添加到执行上下文的作用域链上面，然后再创建一个 活动对象 添加到此作用域顶端共同组成了新的作用域链。活动对象包含了该函数的所有的形参，arguments 对象，所有的局变变量等信息。
+当解释执行函数的每一条语句的时，会依据这个执行上下文的作用域链来查找标识符，如果在一个作用域对象上面没有找到标识符，则会沿着作用链一直向上查找，这一点类似于 Js 的原型继承的属性查找机制。
+web标准以及w3c
+（1）web标准规范要求，书写标签必须闭合、标签小写、不乱嵌套，可提高搜索机器人对网页内容的搜索几率。
+（2）建议使用外链css和js脚本，从而达到结构与行为、结构与表现的分离，提高页面的渲染速度，能更快地显示页面的内容。
+（3）样式与标签的分离，更合理的语义化标签，使内容能被更多的用户所访问、内容能被更广泛的设备所访问、更少的代码和组件， 从而降低维护成本、改版更方便
+（4）不需要变动页面内容，便可提供打印版本而不需要复制内容，提高网站易用性
+减少页面加载时间的方法
+1.优化图片
+2.图像格式的选择（GIF：提供的颜色较少，可用在一些对颜色要求不高的地方）
+3.优化CSS（压缩合并css，如margin-top,margin-left…)
+4.网址后加斜杠（如www.campr.com/目录，会判断这个”目录是什么文件类型，或者是目录。）
+5.标明高度和宽度（如果浏览器没有找到这两个参数，它需要一边下载图片一边计算大小，如果图片很多，浏览器需要不断地调整页面。这不但影响速度，也影响浏览体验。当浏览器知道了高度和宽度参数后，即使图片暂时无法显示，页面上也会腾出图片的空位，然后继续加载后面的内容。从而加载时间快了，浏览体验也更好了。）
+6.减少http请求（合并文件，合并图片）。
