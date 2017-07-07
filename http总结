@@ -1,0 +1,167 @@
+HTTP: Hyper Text Transfer Protocol. 超文本传输协议
+位置：位于TCP/IP协议之上，有时也承载与TLS或SSL协议层之上，也就是HTTPS。http的端口号为80，HTTPS的端口号为443.
+
+          HTTP
+       (tls/ssl)
+          TCP
+          IP
+       数据链路层 
+
+发起：http协议永远是由客户端发起，服务器回送响应。HTTP协议是一个无状态的协议，同一个客户端的请求和上次请求是没有对应关系的。
+工作流程：1.首先客户端与服务器需要建立连接。只要单击某个超链接HTTP就开始工作。2.建立连接后，客户机发送一个请求给服务器，请求方式的统一格式为：请求方法、统一资源标识符（URL）、协议版本号、MIME信息包括请求修饰符、客户机信息和可能的内容。3.服务器接到请求后，基于相应的相应信息，其格式为一个状态行，包括信息的协议版本号、一个成功或者错误的代码，后面是MIME信息包括服务器信息、实体信息和可能的内容。4.客户端接收服务器所返回的信息通过浏览器显示在用户显示屏上然后客户机与服务器断开连接。以上某一步出现错误，那么产生错误的信息将返回到客户端，由显示屏输出。对于用户来说，这些过程是由HTTP自己完成的，用户只要用鼠标点击等待信息显示就可以了。
+ 
+Host头域指定请求资源的Internet主机和端口号，必须表示请求url的原始服务器或者网关的位置。HTTP/1.1请求必须包含主机头域，否则系统会以400状态码返回。
+Referer头域允许客户单指定请求Uri的源资源地址。
+User-Agent头域包含发出请求的用户信息。
+Cache-Control指定请求和响应遵循的缓存机制。在请求消息或者响应消息中设置Cache-Control并不会修改另一个消息处理过程中的缓存处理过程。
+Date域表示消息发送的事件，时间的描述格式由rfc822定义。
+Connection:
+Request和response头都可能出现一个connection的头，此header的含义是当client和server通信时对于长连接如何进行处理。在http1.1中，client和server都默认对方支持长连接的，如果client使用http1.1协议，但又不希望使用长连接，则需要在header中指明connection的值为false，如果server也不想支持长连接，则在response中也需要明确说明connection的值为close。不论request还会response的header包含了值为close的connection，都表明当前正在使用的tcp连接在当前处理请求后必须关闭。以后client再进行新的请求时就必须创建新的tcp连接。
+Message：http通讯的基本单位，包括一个结构化的八元组序列并通过连接传输。
+Request：一个从客户端到服务器的请求信息系包括应用于资源的方法、url和协议版本号。
+Response：从服务器返回的信息包括http协议的版本号、请求状态和文档的mime类型。
+Resource：由URI标识的网络数据对象或者服务。
+Entity：实体，数据资源或来自服务资源的回应的一种特殊表示方法，它可能包含在一个请求或者响应信息中。一个实体包括实体头信息和实体本身内容。
+Client：一个为发送请求目的而建立连接的应用程序。
+UserAgent：初始化一个请求的客户机。浏览器、编辑器或者其它用户工具。
+Server：一个接受连接并对请求返回信息的应用程序。
+Originserver：是一个给定资源可以在其上驻留或被创建的服务器。
+Proxy：一个中间程序，它可以充当一个服务器，也可以充当一个一个客户机，为其它用户建立请求。请求是通过可能的翻译在内部或经过传递到其它的服务器中。一个代理在发送请求信息之前，必须解释并且如果可能重写它。代理经常作为通过防火墙的客户机端的门户，代理还可以作为一个帮助应用来通过协议处理没有被用户代理完成的请求。
+Gateway：作为其他服务器中间媒介的服务器。与代理不同的是，网关接收请求就好像对被请求的资源来说他就是源服务器，发出请求的客户机并没有意识到他在同网关打交道。网关经常作为通过防火墙的服务器端的门户，网关还可以作为一个协议翻译器以便存取那些存储在非http系统中的资源。
+Tunnel：通道。是作为两个连接中继的中介程序。一旦激活，通道便被认为不属于HTTP通讯，尽管通道可能是被一个HTTP请求初始化的。当被中继的连接两端关闭时，通道便消失。当一个门户(Portal)必须存在或中介(Intermediary)不能解释中继的通讯时通道被经常使用。
+Cache：反应信息的局域存储。
+http/1.0与http/1.1比较
+http/1.0每次请求都需要建立新的tcp连接，连接不能复用。http/1.1新的请求可以在上次请求建立的tcp连接之上发送，连接可以复用。优点是减少重复进行tcp三次握手的开销，提高效率。HTTP1.1在Request消息头里头多了一个Host域, HTTP1.0则没有这个域。可能HTTP1.0的时候认为，建立TCP连接的时候已经指定了IP地址，这个IP地址上只有一个host。在HTTP/1.1中还增加了101、203、205等等性状态响应码。http/1.1增加了options、put、delete、trace、connect这些request方法。
+请求消息格式：
+请求行通用信息头|请求头|实体头 CRLF(回车换行)
+实体内容
+其中“请求行”为：请求行 = 方法 [空格] 请求URI [空格] 版本号 [回车换行]
+ 
+http响应消息格式：
+状态行通用信息头|响应头|实体头 CRLF
+实体内容
+其中：状态行 = 版本号 [空格] 状态码 [空格] 原因 [回车换行]
+ 
+http状态响应码：
+http://www.runoob.com/http/http-status-codes.html
+ 
+常用的请求方式get和post：
+Get是向服务器索取数据的一种请求，而post是向服务器提交数据的一种请求，要提交的数据位于信息头后面的实体中。
+GET与POST方法有以下区别：
+（1）   在客户端，Get方式在通过URL提交数据，数据在URL中可以看到；POST方式，数据放置在HTML HEADER内提交。
+（2）   GET方式提交的数据最多只能有1024字节，而POST则没有此限制。
+（3）   安全性问题。正如在（1）中提到，使用 Get 的时候，参数会显示在地址栏上，而 Post 不会。所以，如果这些数据是中文数据而且是非敏感数据，那么使用 get；如果用户输入的数据不是中文字符而且包含敏感数据，那么还是使用 post为好。
+（4）   安全的和幂等的。所谓安全的意味着该操作用于获取信息而非修改信息。幂等的意味着对同一 URL 的多个请求应该返回同样的结果。完整的定义并不像看起来那样严格。换句话说，GET 请求一般不应产生副作用。
+HTTP最常见的请求头如下：
+l         Accept：浏览器可接受的MIME类型；
+l         Accept-Charset：浏览器可接受的字符集；
+l         Accept-Encoding：浏览器能够进行解码的数据编码方式，比如gzip。Servlet能够向支持gzip的浏览器返回经gzip编码的HTML页面。许多情形下这可以减少5到10倍的下载时间；
+l         Accept-Language：浏览器所希望的语言种类，当服务器能够提供一种以上的语言版本时要用到；
+l         Authorization：授权信息，通常出现在对服务器发送的WWW-Authenticate头的应答中；
+l         Connection：表示是否需要持久连接。如果Servlet看到这里的值为“Keep-Alive”，或者看到请求使用的是HTTP 1.1（HTTP 1.1默认进行持久连接），它就可以利用持久连接的优点，当页面包含多个元素时（例如Applet，图片），显著地减少下载所需要的时间。要实现这一点，Servlet需要在应答中发送一个Content-Length头，最简单的实现方法是：先把内容写入ByteArrayOutputStream，然后在正式写出内容之前计算它的大小；
+l         Content-Length：表示请求消息正文的长度；
+l         Cookie：这是最重要的请求头信息之一；
+l         From：请求发送者的email地址，由一些特殊的Web客户程序使用，浏览器不会用到它；
+l         Host：初始URL中的主机和端口；
+l         If-Modified-Since：只有当所请求的内容在指定的日期之后又经过修改才返回它，否则返回304“Not Modified”应答；
+l         Pragma：指定“no-cache”值表示服务器必须返回一个刷新后的文档，即使它是代理服务器而且已经有了页面的本地拷贝；
+l         Referer：包含一个URL，用户从该URL代表的页面出发访问当前请求的页面。
+l         User-Agent：浏览器类型，如果Servlet返回的内容与浏览器类型有关则该值非常有用；
+l         UA-Pixels，UA-Color，UA-OS，UA-CPU：由某些版本的IE浏览器所发送的非标准的请求头，表示屏幕大小、颜色深度、操作系统和CPU类型。
+响应头
+HTTP最常见的响应头如下所示：
+l         Allow：服务器支持哪些请求方法（如GET、POST等）；
+l         Content-Encoding：文档的编码（Encode）方法。只有在解码之后才可以得到Content-Type头指定的内容类型。利用gzip压缩文档能够显著地减少HTML文档的下载时间。Java的GZIPOutputStream可以很方便地进行gzip压缩，但只有Unix上的Netscape和Windows上的IE 4、IE 5才支持它。因此，Servlet应该通过查看Accept-Encoding头（即request.getHeader("Accept-Encoding")）检查浏览器是否支持gzip，为支持gzip的浏览器返回经gzip压缩的HTML页面，为其他浏览器返回普通页面；
+l         Content-Length：表示内容长度。只有当浏览器使用持久HTTP连接时才需要这个数据。如果你想要利用持久连接的优势，可以把输出文档写入ByteArrayOutputStram，完成后查看其大小，然后把该值放入Content-Length头，最后通过byteArrayStream.writeTo(response.getOutputStream()发送内容；
+l         Content-Type： 表示后面的文档属于什么MIME类型。Servlet默认为text/plain，但通常需要显式地指定为text/html。由于经常要设置Content-Type，因此HttpServletResponse提供了一个专用的方法setContentTyep。 可在web.xml文件中配置扩展名和MIME类型的对应关系；
+l         Date：当前的GMT时间。你可以用setDateHeader来设置这个头以避免转换时间格式的麻烦；
+l         Expires：指明应该在什么时候认为文档已经过期，从而不再缓存它。
+l         Last-Modified：文档的最后改动时间。客户可以通过If-Modified-Since请求头提供一个日期，该请求将被视为一个条件GET，只有改动时间迟于指定时间的文档才会返回，否则返回一个304（Not Modified）状态。Last-Modified也可用setDateHeader方法来设置；
+l         Location：表示客户应当到哪里去提取文档。Location通常不是直接设置的，而是通过HttpServletResponse的sendRedirect方法，该方法同时设置状态代码为302；
+l         Refresh：表示浏览器应该在多少时间之后刷新文档，以秒计。除了刷新当前文档之外，你还可以通过setHeader("Refresh", "5; URL=http://host/path")让浏览器读取指定的页面。注意这种功能通常是通过设置HTML页面HEAD区的<META HTTP-EQUIV="Refresh" CONTENT="5;URL=http://host/path">实现，这是因为，自动刷新或重定向对于那些不能使用CGI或Servlet的HTML编写者十分重要。但是，对于Servlet来说，直接设置Refresh头更加方便。注意Refresh的意义是“N秒之后刷新本页面或访问指定页面”，而不是“每隔N秒刷新本页面或访问指定页面”。因此，连续刷新要求每次都发送一个Refresh头，而发送204状态代码则可以阻止浏览器继续刷新，不管是使用Refresh头还是<META HTTP-EQUIV="Refresh" ...>。注意Refresh头不属于HTTP 1.1正式规范的一部分，而是一个扩展，但Netscape和IE都支持它。
+实体头
+实体头用坐实体内容的元信息，描述了实体内容的属性，包括实体信息类型，长度，压缩方法，最后一次修改时间，数据有效性等。
+l         Allow：GET, POST
+l         Content-Encoding：文档的编码（Encode）方法，例如：gzip，见“2.5 响应头”；
+l         Content-Language：内容的语言类型，例如：zh-cn；
+l         Content-Length：表示内容长度，eg：80，可参考“2.5响应头”；
+l         Content-Location：表示客户应当到哪里去提取文档，例如：http://www.dfdf.org/dfdf.html，可参考“2.5响应头”；
+l         Content-MD5：MD5 实体的一种MD5摘要，用作校验和。发送方和接受方都计算MD5摘要，接受方将其计算的值与此头标中传递的值进行比较。Eg1：Content-MD5: <base64 of 128 MD5 digest>。Eg2：dfdfdfdfdfdfdff==；
+l         Content-Range：随部分实体一同发送；标明被插入字节的低位与高位字节偏移，也标明此实体的总长度。Eg1：Content-Range: 1001-2000/5000，eg2：bytes 2543-4532/7898
+l         Content-Type：标明发送或者接收的实体的MIME类型。Eg：text/html; charset=GB2312       主类型/子类型；
+l         Expires：为0证明不缓存；
+l         Last-Modified：WEB 服务器认为对象的最后修改时间，比如文件的最后修改时间，动态页面的最后产生时间等等。例如：Last-Modified：Tue, 06 May 2008 02:42:43 GMT.
+扩展头
+在HTTP消息中，也可以使用一些再HTTP1.1正式规范里没有定义的头字段，这些头字段统称为自定义的HTTP头或者扩展头，他们通常被当作是一种实体头处理。
+现在流行的浏览器实际上都支持Cookie,Set-Cookie,Refresh和Content-Disposition等几个常用的扩展头字段。
+l         Refresh：1;url=http://www.dfdf.org  //过1秒跳转到指定位置；
+l         Content-Disposition：头字段,可参考“2.5响应头”；
+l         Content-Type：WEB 服务器告诉浏览器自己响应的对象的类型。
+eg1：Content-Type：application/xml ；
+eg2：application/octet-stream；
+Cookie和Session有以下明显的不同点：
+1）Cookie将状态保存在客户端，Session将状态保存在服务器端；
+2）Cookies是服务器在本地机器上存储的小段文本并随每一个请求发送至同一个服务器。Cookie最早在RFC2109中实现，后续RFC2965做了增强。网络服务器用HTTP头向客户端发送cookies，在客户终端，浏览器解析这些cookies并将它们保存为一个本地文件，它会自动将同一服务器的任何请求缚上这些cookies。Session并没有在HTTP的协议中定义；
+3）Session是针对每一个用户的，变量的值保存在服务器上，用一个sessionID来区分是哪个用户session变量,这个值是通过用户的浏览器在访问的时候返回给服务器，当客户禁用cookie时，这个值也可能设置为由get来返回给服务器；
+4）就安全性来说：当你访问一个使用session 的站点，同时在自己机子上建立一个cookie，建议在服务器端的SESSION机制更安全些.因为它不会任意读取客户存储的信息。
+http://www.blogjava.net/zjusuyong/articles/304788.html
+WEB缓存(cache)
+缓存位于Web服务器和客户端之间。
+缓存会根据请求保存输出内容的副本，例如html页面，图片，文件，当下一个请求来到的时候：如果是相同的URL，缓存直接使用副本响应访问请求，而不是向源服务器再次发送请求。HTTP协议定义了相关的消息头来使WEB缓存尽可能好的工作。
+缓存的优点：减少相应延迟：因为请求从缓存服务器（离客户端更近）而不是源服务器被相应，这个过程耗时更少，让web服务器看上去相应更快；减少网络带宽消耗：当副本被重用时会减低客户端的带宽消耗；客户可以节省带宽费用，控制带宽的需求的增长并更易于管理。
+与缓存相关的HTTP扩展消息头
+Expires：指示响应内容过期的时间，格林威治时间GMT
+Cache-Control：更细致的控制缓存的内容
+Last-Modified：响应中资源最后一次修改的时间
+ETag：响应中资源的校验值，在服务器上某个时段是唯一标识的。
+Date：服务器的时间
+If-Modified-Since：客户端存取的该资源最后一次修改的时间，同Last-Modified。
+If-None-Match：客户端存取的该资源的检验值，同ETag。
+服务器收到请求时，会在200OK中回送该资源的Last-Modified和ETag头，客户端将该资源保存在cache中，并记录这两个属性。当客户端需要发送相同的请求时，会在请求中携带If-Modified-Since和If-None-Match两个头。两个头的值分别是响应中Last-Modified和ETag头的值。服务器通过这两个头判断本地资源未发生变化，客户端不需要重新下载，返回304响应。常见流程如下图所示：
+
+HTTPS（全称：Hypertext Transfer Protocol over Secure Socket Layer），是以安全为目标的HTTP通道，简单讲是HTTP的安全版。即HTTP下加入SSL层，HTTPS的安全基础是SSL，因此加密的详细内容请看SSL。https所用的端口号是443。
+
+成功的网页响应
+HTTP/1.1 200 OK
+Date: Sat, 09 Oct 2010 14:28:02 GMT
+Server: Apache
+Last-Modified: Tue, 01 Dec 2009 20:18:22 GMT
+ETag: "51142bc1-7449-479b075b2891b"
+Accept-Ranges: bytes
+Content-Length: 29769
+Content-Type: text/html
+<!DOCTYPE html... (这里是 29769 字节的网页信息)
+
+请求资源已经永久移动
+HTTP/1.1 301 Moved Permanently
+Server: Apache/2.2.3 (Red Hat)
+Content-Type: text/html; charset=iso-8859-1
+Date: Sat, 09 Oct 2010 14:30:24 GMT
+Location: https://developer.mozilla.org/ (该资源的新的链接, 服务器期望用户代理去访问它)
+Keep-Alive: timeout=15, max=98
+Accept-Ranges: bytes
+Via: Moz-Cache-zlb05
+Connection: Keep-Alive
+X-Cache-Info: caching
+X-Cache-Info: caching
+Content-Length: 325 (如果用户代理不能跟随新的链接, 那么就显示一个默认页面)
+
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html><head>
+<title>301 Moved Permanently</title>
+</head><body>
+<h1>Moved Permanently</h1>
+<p>The document has moved <a href="https://developer.mozilla.org/">here</a>.</p>
+<hr>
+<address>Apache/2.2.3 (Red Hat) Server at developer.mozilla.org Port 80</address>
+</body></html>
+请求的资源不存在
+HTTP/1.1 404 Not Found
+Date: Sat, 09 Oct 2010 14:33:02 GMT
+Server: Apache
+Last-Modified: Tue, 01 May 2007 14:24:39 GMT
+ETag: "499fd34e-29ec-42f695ca96761;48fe7523cfcc1"
+Accept-Ranges: bytes
+Content-Length: 10732
+Content-Type: text/html
+<!DOCTYPE html... (包含一个站点自定义的页面, 帮助用户找到丢失的资源)
