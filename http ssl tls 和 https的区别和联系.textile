@@ -25,7 +25,7 @@ ssl/tls协议的基本过程是这样的：
 双方协商生成对话密钥。
 双方采用对话密钥进行加密通信。
 上面的前两步又称为握手阶段。
-<img src=""/>
+<img src="https://github.com/realyuyanan/sourceroom/blob/master/tls%20ssl.png"/>
 3.ssl http和https协议的联系
 ssl是Netscape公司提出的安全保密协议，在浏览器和文本服务器之间构造安全通道来进行数据传输，ssl运行在TCP、IP层之上，应用层之下，为应用程序提供加密数据通道，它采用了RC4、MD5以及RSA等加密算法，使用40位的密钥，适用于商业信息的加密。
 同时Netscape公司相应开发了https协议并内置于其浏览器中，https实际上就是ssl over http，他是用默认端口443，而不是像http那样使用80端口和TCP/IP进行通信。https协议使用ssl在发送方把原始数据进行加密，然后接受方进行解密。加密和解密需要发送发和接收方通过交换共知的密钥来实现，因此所传送的数据不容易被网络黑客截获和解密。
@@ -41,7 +41,7 @@ https还是要基于TCP来传输。
 真实性。
 
 http与https区别：
-<img src=""/>
+<img src="https://github.com/realyuyanan/sourceroom/blob/master/http%20https%E5%8C%BA%E5%88%AB.png"/>
 
 
 转载至：http://www.mahaixiang.cn/internet/1522.html
