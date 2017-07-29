@@ -1,0 +1,16 @@
+1.pageX和clientX
+pageX：鼠标相对于文档左上角的位置，绝对位置，会随着滚动条的变化而变化
+clientX：鼠标相对于浏览器显示窗口的位置左上角的，它的值不会随着滚动条的变化而变化
+pageX=clientX+scrollLeft;
+//PageY=clientY+scrollTop-clientTop;(只讨论Y轴,X轴同理,下同)
+页面上的位置=可视区域位置+页面滚动条切去高度-自身border高度
+
+2.screenX
+screenX:鼠标在屏幕上的位置,从屏幕左上角开始
+
+3.offsetX，layerX
+offsetX:IE特有,鼠标相比较于触发事件的元素的位置,以元素盒子模型的内容区域的左上角为参考点,如果有boder,可能出现负值
+
+clientX与screenX是w3c标准
+
+
