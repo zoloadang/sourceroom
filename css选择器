@@ -1,0 +1,85 @@
+1.常规选择器
+#通配符：*
+#类型选择器或元素选择器：
+ 不区分大小写 h1{color:red;} 或 H1{color:red;} 都能选择h1标签并将字体颜色置为红色
+#类选择器：区分大小写，定位到指定类名的所有元素
+ .copyright{font-size:smaller;}
+#ID选择器：区分大小写，定位到文档中具有特定ID的唯一元素
+ #main{font-size:12px;}
+
+2.关系选择器
+#后代组合器 E F{}
+ p strong{...}
+#父子组合器 E > F{...}
+ p>strong{...}
+#相邻兄弟组合器 E + F{...}
+ 定位到元素F在标记里面需要立即出现在E的后面，
+ p+p{...}
+#常规兄弟组合器 E ~ F{...}
+ 如果E F共享一个父元素的话，他会定位到选择器里面的第二个元素(第一个E元素后面的任意兄弟F元素)。常规兄弟选择器能够匹配不止一个节点。
+ 如图https://github.com/realyuyanan/sourceroom/blob/master/css%E7%9B%B8%E9%82%BB%E9%80%89%E6%8B%A9%E5%99%A8%E5%B7%AE%E5%88%AB.png
+ 
+3.属性选择器
+ E[attr]：具有指定属性
+ E[attr=val]：具有指定属性且值为val
+ E[attr|=val]：值正好是val或已val开始后面紧跟着一个-，例如：a[href|='src'] 定位到<a href="src-src">alink</a>
+ E[attr~=val]：匹配到属性值中任何一个以空格分开的完整的词
+ E[attr^=val]：val与属性值的开始部分匹配
+ E[attr$=val]：val与属性值的结尾部分匹配
+ E[attr*=val]：val与属性值中任意一个部分相匹配
+ 
+4.伪类
+ 伪类是基于在DOM中的位置或用户界面当前状态的类，就特定性和层叠而言，伪类具有与普通类相同的权重。
+ :link 未访问过的连接
+ :visited 已访问过的链接
+ :hover 被悬停的元素
+ :active 当前用户活动的元素
+ :focus 从触摸、键盘、鼠标事件或其他输入方式获得焦点的元素
+ :enabled 状态为已启用的用户界面元素
+ :disabled 已禁用的用户界面元素
+ :checked 已选中的单选按钮及复选框
+ :indeterminate 既不是已选中也不是未选中的表单元素
+
+5.状态伪类
+ :default，:invalide, :valid, :in-range, :out-of-range, :required, :optional, :read-only, :read-write
+
+6.结构上的伪类
+ :root 根元素，<html>
+ :nth-child() 父元素的第nth个子元素，
+ :nth-last-child() 父元素的第nth个子元素，从最后一个算起
+ :nth-of-type 与其同类型的第nth个子元素
+ :nth-last-of-type 与其同类型的第nth个子元素，从最后一个算起
+ :first-child 第一个子元素
+ :last-child 最后一个子元素
+ :first-of-type 与其同类型的第一个子元素
+ :last-of-type 与其同类型的最后一个子元素
+ :only-child 父元素唯一的子元素
+ :only-of-type 同类型的唯一的子元素
+ :empty 没有任何子元素
+ 
+ #nth公式
+ #偶数和奇数
+  :nth-child(even){...}
+  :nth-child(odd){...}
+  :nth-of-type(even){...}
+  :nth-of-type(odd){...}
+ #单个元素n
+  n=0,1,2,3,4,5,6,...
+  :nth-child(n){...}
+  :nth-of-type(n){...}
+  #单个元素，数学表达式
+  :nth-child(xn+y){...}
+  #nth-type与nth-child区别：
+   举例说明：
+   .parent p:nth-child(3){...}
+   .parent p:nth-of-type(3){...}
+   nth-child(3)会查看parent的第三个子元素是否是一个段落，而nth-of-type或查找parent子元素中出现的第三个p元素。
+
+7.伪元素
+ 伪元素可以定位那些属于文档的一部分但是无法在DOM树种定位的文本。
+ :first-letter 指向元素文本首字母
+ :first-line 执行元素中文本的第一行文本
+ :after 提供了一种指向在标记或DOM中并不存在的内容的方法。
+ :before 同:after
+ 双冒号：一个伪元素以两个冒号开始，后面跟着伪元素的名称。在css3里面以一个双冒号代替单冒号。从而在伪元素和伪类之间又有一个明显的区分。
+ 
