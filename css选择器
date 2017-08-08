@@ -39,6 +39,10 @@
  :disabled 已禁用的用户界面元素
  :checked 已选中的单选按钮及复选框
  :indeterminate 既不是已选中也不是未选中的表单元素
+ 
+ :target 目标伪类，当前活跃的一个页面内部锚点目标的元素
+ :lang(l) 语言伪类
+ :not(s) 否定伪类
 
 5.状态伪类
  :default，:invalide, :valid, :in-range, :out-of-range, :required, :optional, :read-only, :read-write
