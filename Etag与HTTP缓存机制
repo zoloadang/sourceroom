@@ -1,0 +1,81 @@
+Etag - Last-Modified和Etags如何帮助提高性能?
+
+把Last-Modified和ETags请求的http报头一起使用，这样可利用客户端（例如浏览器）的缓存。因为服务器首先产生Last-Modified/Etag标记，服务器可在稍后使用它来判断页面是否已经被修改。本质上，客户端通过将该记号传回服务器要求服务器验证其（客户端）缓存。
+过程如下:
+1.客户端请求一个页面（A）。
+2.服务器返回页面A，并在给A加上一个Last-Modified/ETag。
+3.客户端展现该页面，并将页面连同Last-Modified/ETag一起缓存。
+4.客户再次请求页面A，并将上次请求时服务器返回的Last-Modified/ETag一起传递给服务器。
+5.服务器检查该Last-Modified或ETag，并判断出该页面自上次客户端请求之后还未被修改，直接返回响应304和一个空的响应体。
+
+Etag - 作用
+Etag 主要为了解决 Last-Modified 无法解决的一些问题。
+1、 一些文件也许会周期性的更改，但是他的内容并不改变(仅仅改变的修改时间)，这个时候我们并不希望客户端认为这个文件被修改了，而重新GET;
+2、某些文件修改非常频繁，比如在秒以下的时间内进行修改，(比方说1s内修改了N次)，If-Modified-Since能检查到的粒度是s级的，这种修改无法判断(或者说UNIX记录MTIME只能精确到秒)
+3、某些服务器不能精确的得到文件的最后修改时间；
+为此，HTTP/1.1 引入了 Etag(Entity Tags).Etag仅仅是一个和文件相关的标记，可以是一个版本标记,比如说v1.0.0或者说"2e681a-6-5d044840"这么一串看起来很神秘的编码。但是HTTP/1.1标准并没有规定Etag的内容是什么或者说要怎么实现，唯一规定的是Etag需要放在""内。
+
+Etag - 工作原理
+Etag由服务器端生成，客户端通过If-Match或者说If-None-Match这个条件判断请求来验证资源是否修改。常见的是使用If-None-Match.请求一个文件的流程可能如下：
+
+Etag计算
+http://www.cnblogs.com/tyb1222/archive/2011/12/24/2300246.html
+https://my.oschina.net/debi/blog/50609
+
+====第一次请求===
+1.客户端发起 HTTP GET 请求一个文件；
+2.服务器处理请求，返回文件内容和一堆Header，当然包括Etag(例如"2e681a-6-5d044840")(假设服务器支持Etag生成和已经开启了Etag).状态码200
+====第二次请求===
+1.客户端发起 HTTP GET 请求一个文件，注意这个时候客户端同时发送一个If-None-Match头，这个头的内容就是第一次请求时服务器返回的Etag：2e681a-6-5d044840
+2.服务器判断发送过来的Etag和计算出来的Etag匹配，因此If-None-Match为False，不返回200，返回304，客户端继续使用本地缓存；
+流程很简单，问题是，如果服务器又设置了Cache-Control:max-age和Expires呢，怎么办？
+答案是同时使用，也就是说在完全匹配If-Modified-Since和If-None-Match即检查完修改时间和Etag之后，服务器才能返回304.
+
+扩展：HTTP中的缓存机制
+网页的缓存是由HTTP消息头中的“Cache-control”来控制的，常见的取值有private、no-cache、max-age、must- revalidate等，默认为private。其作用根据不同的重新浏览方式分为以下几种情况：
+（1） 打开新窗口
+值为private、no-cache、must-revalidate，那么打开新窗口访问时都会重新访问服务器。
+而如果指定了max-age值，那么在此值内的时间里就不会重新访问服务器，例如：
+Cache-control: max-age=5(表示当访问此网页后的5 秒 内再次访问不会去服务器)
+（2） 在地址栏回车
+值为private或must-revalidate则只有第一次访问时会访问服务器，以后就不再访问。
+值为no-cache，那么每次都会访问。
+值为max-age，则在过期之前不会重复访问。
+（3） 按后退按扭
+值为private、must-revalidate、max-age，则不会重访问，
+值为no-cache，则每次都重复访问
+（4） 按刷新按扭
+无论为何值，都会重复访问
+Cache-control值为“no-cache”时，访问此页面不会在Internet临时文章夹留下页面备份。
+
+header常用指令
+header分为三部分：
+第一部分为HTTP协议的版本(HTTP-Version)；
+第二部分为状态代码(Status)；
+第三部分为原因短语(Reason-Phrase)。 
+// fix 404 pages: 用这个header指令来解决URL重写产生的404 header 
+header('HTTP/1.1 200 OK');  
+// set 404 header: 页面没找到
+header('HTTP/1.1 404 Not Found'); 
+  
+//页面被永久删除，可以告诉搜索引擎更新它们的urls
+// set Moved Permanently header (good for redrictions) 
+// use with location header 
+header('HTTP/1.1 301 Moved Permanently');  
+// 访问受限
+header('HTTP/1.1 403 Forbidden');
+// 服务器错误
+header('HTTP/1.1 500 Internal Server Error');
+
+禁止页面在IE中缓存 
+http响应消息头部设置：
+CacheControl = no-cache
+Pragma=no-cache
+Expires = -1 
+
+Expires 表示存在时间，允许客户端在这个时间之前不去检查（发请求），等同max-age的 
+效果。但是如果同时存在，则被Cache-Control的max-age覆盖。 
+
+HTTP响应优化
+1.去掉Date, Expires
+2.只保留Cache-Control来控制本地缓存
