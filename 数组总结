@@ -1,0 +1,17 @@
+数组长度0-2^23-1
+delete arr[index] 不影响数组长度，只是将arr index位置变为undefined
+栈操作：arr.push,arr.pop
+队列操作：arr.unshift,arr.shift
+
+数组方法
+arr.join(",") 数组连接
+arr.reverse() 数组翻转，原数组被修改
+arr.sort(function(...){});数组内排序，原数组被修改
+arr.concat()数组合并，返回新数组
+arr.slice(start,end)数组截取
+arr.forEach()数组遍历，无返回值
+arr.map()数组映射，不影响原数组
+arr.every,arr.some()返回值为布尔值
+arr.reduce(),数组元素两两操作，reduceRight
+indexOf(),lastIndexOf()
+Array.isArray()判断是否为数组
